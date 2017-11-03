@@ -7,11 +7,11 @@ Gem::Specification.new do |spec|
   spec.name          = "pghub-assign"
   spec.version       = Pghub::Assign::VERSION
   spec.authors       = ["ebkn12, akias, Doppon, seteen, mryoshio, sughimura"]
-  spec.email         = ["ktennis.mqekr12@gmail.com"]
+  spec.email         = ["developers@playground.live"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Automatically assign members to your pull request.}
+  spec.description   = %q{This gem automatically assigns members when your pull request open.}
+  spec.homepage      = "http://tech-blog.playground.live"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
