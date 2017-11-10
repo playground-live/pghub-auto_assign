@@ -11,20 +11,19 @@ module Pghub
       def post(issue_path, opened_user)
         all_members = {}
 
-        all_teams_data.each do |team|
-          all_members[team['name'].to_s] = all_members_from(team['id'])
+        teams_data.each do |team|
+          all_members[team['name'].to_s] = team_members(team['id'])
         end
 
-        selected_assignees = assignees(all_members, opened_user)
-        assign(issue_path, selected_assignees)
-
-        selected_reviewers = reviewers(selected_assignees, opened_user)
-        review_request(issue_path, selected_reviewers)
+        assignees = select_assignees(all_members, opened_user)
+        reviewers = select_reviewers(assignees, opened_user)
+        assign(issue_path, assignees)
+        review_request(issue_path, reviewers)
       end
 
       private
 
-      def all_teams_data
+      def teams_data
         response = connection.get("/orgs/#{Pghub.config.github_organization}/teams?access_token=#{Pghub.config.github_access_token}")
         body = JSON.parse(response.body)
 
@@ -42,7 +41,7 @@ module Pghub
 
       # get members related to teams from github
       # return { "team_name": ["member_name", "member_name"...] }
-      def all_members_from(team_id)
+      def team_members(team_id)
         response = connection.get("/teams/#{team_id}/members?access_token=#{Pghub.config.github_access_token}")
         body = JSON.parse(response.body)
 
