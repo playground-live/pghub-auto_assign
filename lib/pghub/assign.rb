@@ -3,18 +3,16 @@ require 'pghub/base'
 
 include GithubAPI::Connection
 
+class UnknownTeamError < StandardError; end
+
 module Pghub
   module Assign
     class << self
       def post(issue_path, opened_user)
         all_members = {}
+
         all_teams_data.each do |team|
           all_members[team['name'].to_s] = all_members_from(team['id'])
-        end
-
-        # TODO: define method for this process
-        all_members.keys do |team_name|
-          raise 'unknown team name' unless team_name.include?(Pghub.config.assign_numbers.keys)
         end
 
         selected_assignees = assignees(all_members, opened_user)
@@ -26,15 +24,19 @@ module Pghub
 
       private
 
-      # get team_id
-      # return [{ "hoge" => "43525" }, { "hoge" => "52431"} ...]
       def all_teams_data
         response = connection.get("/orgs/#{Pghub.config.github_organization}/teams?access_token=#{Pghub.config.github_access_token}")
         body = JSON.parse(response.body)
 
-        # TODO: rename
-        body.map do |h|
-          { 'id' => h['id'], 'name' => h['name'] }
+        team_names = body.map { |data| data['name'] }
+        team_exists?(Pghub.config.assign_numbers.keys, team_names)
+
+        body.map { |data| { 'id' => data['id'], 'name' => data['name'] } }
+      end
+
+      def team_exists?(configured_teams, valid_teams)
+        configured_teams.each do |team|
+          raise UnknownTeamError, "Unknown #{team}" unless valid_teams.include?(team)
         end
       end
 
