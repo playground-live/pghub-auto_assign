@@ -2,8 +2,6 @@
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/pghub/assign`. To experiment with that code, run `bin/console` for an interactive prompt.
 
-TODO: Delete this and the text above, and describe your gem
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -22,7 +20,26 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+- mount in routes.rb
+
+```ruby
+mount Pghub::Base::Engine => 'some path'
+```
+
+- Get github access token
+- Add following settings to config/initializers/pghub.rb
+
+```ruby
+Pghub.configure do |config|
+  config.github_organization = "Your organization (or user) name"
+  config.github_access_token = "Your Github Access Token"
+  config.num_of_assignees = { 'myteam1' => 1, 'myteam2' => 1 }
+  config.num_of_reviewers = { 'myteam1' => 1, 'myteam2' => 1 }
+end
+```
+
+- Deploy to server
+- Set webhook to your repository
 
 ## Development
 
