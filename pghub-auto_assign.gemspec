@@ -1,15 +1,15 @@
 # coding: utf-8
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "pghub/assign/version"
+require "pghub/auto_assign/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "pghub-assign"
-  spec.version       = Pghub::Assign::VERSION
+  spec.name          = "pghub-auto_assign"
+  spec.version       = Pghub::AutoAssign::VERSION
   spec.authors       = ["ebkn12, akias, Doppon, seteen, mryoshio, sughimura"]
   spec.email         = ["developers@playground.live"]
 
-  spec.summary       = %q{Automatically assign members to your pull request.}
+  spec.summary       = %q{Automatically auto_assign members to your pull request.}
   spec.description   = %q{This gem automatically assigns members when your pull request open.}
   spec.homepage      = "http://tech-blog.playground.live"
   spec.license       = "MIT"

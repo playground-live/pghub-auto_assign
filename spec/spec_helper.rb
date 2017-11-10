@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "pghub/assign"
+require "pghub/auto_assign"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
