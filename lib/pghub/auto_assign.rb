@@ -12,7 +12,7 @@ module Pghub
         assignees = select_assignees(opened_pr_user)
         reviewers = select_reviewers(opened_pr_user)
         assign(issue_path, assignees)
-        review_request(issue_path, reviewers)
+        request_review(issue_path, reviewers)
       end
 
       private
@@ -93,7 +93,7 @@ module Pghub
         end
       end
 
-      def review_request(issue_path, reviewers)
+      def request_review(issue_path, reviewers)
         pr_path = issue_path.gsub('issues', 'pulls')
 
         connection.post do |req|
