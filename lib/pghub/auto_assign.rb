@@ -75,11 +75,7 @@ module Pghub
             number -= 1
           end
 
-          number.times do
-            selected_member = team_members.sample
-            members << selected_member
-            team_members.delete(selected_member)
-          end
+          members += team_members.sample(number)
         end
 
         members
