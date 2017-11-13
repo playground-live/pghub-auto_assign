@@ -23,7 +23,7 @@ Or install it yourself as:
 - mount in routes.rb
 
 ```ruby
-mount Pghub::Base::Engine => 'some path'
+mount Pghub::Base::Engine => 'some/path'
 ```
 
 - Get github access token
@@ -33,8 +33,8 @@ mount Pghub::Base::Engine => 'some path'
 Pghub.configure do |config|
   config.github_organization = "Your organization (or user) name"
   config.github_access_token = "Your Github Access Token"
-  config.num_of_assignees = { 'myteam1' => 1, 'myteam2' => 1 }
-  config.num_of_reviewers = { 'myteam1' => 1, 'myteam2' => 1 }
+  config.num_of_assignees_per_team = { myteam1: 1, myteam2: 1 }
+  config.num_of_reviewers_per_team = { myteam: 2, myteam2: 2 }
 end
 ```
 

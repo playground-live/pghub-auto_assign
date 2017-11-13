@@ -20,7 +20,7 @@ module Pghub
       def all_members
         members = {}
         teams_data.each do |team|
-          members[team[:name].to_sym] = team_members_from(team[:id])
+          members[team[:name].to_sym] = team_members(team[:id])
         end
         members
       end
@@ -44,7 +44,7 @@ module Pghub
         end
       end
 
-      def team_members_from(team_id)
+      def team_members(team_id)
         response = connection.get("/teams/#{team_id}/members?access_token=#{Pghub.config.github_access_token}")
         body = JSON.parse(response.body)
 
@@ -65,8 +65,8 @@ module Pghub
         select_members(reviewers, Pghub.config.num_of_reviewers_per_team, opened_pr_user)
       end
 
-      def select_members(members, num_of_members, opened_pr_user)
-        num_of_members.each do |team, number|
+      def select_members(members, num_of_members_per_team, opened_pr_user)
+        num_of_members_per_team.each do |team, number|
           team_members = all_members[team.to_sym]
           raise 'too many assign_numbers' if number > team_members.length
 
