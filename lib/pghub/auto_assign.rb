@@ -8,9 +8,9 @@ class UnknownTeamError < StandardError; end
 module Pghub
   module AutoAssign
     class << self
-      def post(issue_path, opened_user)
-        assignees = select_assignees(opened_user)
-        reviewers = select_reviewers(opened_user)
+      def post(issue_path, opened_pr_user)
+        assignees = select_assignees(opened_pr_user)
+        reviewers = select_reviewers(opened_pr_user)
         assign(issue_path, assignees)
         review_request(issue_path, reviewers)
       end
@@ -51,27 +51,27 @@ module Pghub
         body.map { |h| h['login'] }
       end
 
-      def select_assignees(opened_user)
-        assignees = [opened_user]
+      def select_assignees(opened_pr_user)
+        assignees = [opened_pr_user]
         return assignees if Pghub.config.num_of_assignees_per_team.empty?
 
-        select_members(assignees, Pghub.config.num_of_assignees_per_team, opened_user)
+        select_members(assignees, Pghub.config.num_of_assignees_per_team, opened_pr_user)
       end
 
-      def select_reviewers(opened_user)
+      def select_reviewers(opened_pr_user)
         reviewers = []
         return reviewers if Pghub.config.num_of_reviewers_per_team.empty?
 
-        select_members(reviewers, Pghub.config.num_of_reviewers_per_team, opened_user)
+        select_members(reviewers, Pghub.config.num_of_reviewers_per_team, opened_pr_user)
       end
 
-      def select_members(members, num_of_members, opened_user)
+      def select_members(members, num_of_members, opened_pr_user)
         num_of_members.each do |team, number|
           team_members = all_members[team.to_sym]
           raise 'too many assign_numbers' if number > team_members.length
 
-          if team_members.include?(opened_user)
-            team_members.delete(opened_user)
+          if team_members.include?(opened_pr_user)
+            team_members.delete(opened_pr_user)
             number -= 1
           end
 
