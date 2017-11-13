@@ -20,7 +20,7 @@ module Pghub
       def all_members
         members = {}
         teams_data.each do |team|
-          members[team[:name]] = team_members_from(team[:id])
+          members[team[:name].to_sym] = team_members_from(team[:id])
         end
         members
       end
@@ -67,7 +67,7 @@ module Pghub
 
       def select_members(members, num_of_members, opened_user)
         num_of_members.each do |team, number|
-          team_members = all_members[team.to_s]
+          team_members = all_members[team.to_sym]
           raise 'too many assign_numbers' if number > team_members.length
 
           if team_members.include?(opened_user)
