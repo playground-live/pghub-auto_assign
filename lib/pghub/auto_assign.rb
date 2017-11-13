@@ -36,10 +36,10 @@ module Pghub
       end
 
       def validate_teams(valid_teams)
-        Pghub.config.num_of_assignees.each_key do |team|
+        Pghub.config.num_of_assignees_per_team.each_key do |team|
           raise UnknownTeamError, "Unknown #{team}" unless valid_teams.include?(team)
         end
-        Pghub.config.num_of_reviewers.each_key do |team|
+        Pghub.config.num_of_reviewers_per_team.each_key do |team|
           raise UnknownTeamError, "Unknown #{team}" unless valid_teams.include?(team)
         end
       end
@@ -53,16 +53,16 @@ module Pghub
 
       def select_assignees(opened_user)
         assignees = [opened_user]
-        return assignees if Pghub.config.num_of_assignees.empty?
+        return assignees if Pghub.config.num_of_assignees_per_team.empty?
 
-        select_members(assignees, Pghub.config.num_of_assignees, opened_user)
+        select_members(assignees, Pghub.config.num_of_assignees_per_team, opened_user)
       end
 
       def select_reviewers(opened_user)
         reviewers = []
-        return reviewers if Pghub.config.num_of_reviewers.empty?
+        return reviewers if Pghub.config.num_of_reviewers_per_team.empty?
 
-        select_members(reviewers, Pghub.config.num_of_reviewers, opened_user)
+        select_members(reviewers, Pghub.config.num_of_reviewers_per_team, opened_user)
       end
 
       def select_members(members, num_of_members, opened_user)
