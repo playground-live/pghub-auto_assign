@@ -11,7 +11,7 @@ module Pghub
       def post(issue_path, opened_user)
         assignees = select_assignees(opened_user)
         reviewers = select_reviewers(opened_user)
-        auto_assign(issue_path, assignees)
+        assign(issue_path, assignees)
         review_request(issue_path, reviewers)
       end
 
@@ -85,7 +85,7 @@ module Pghub
         members
       end
 
-      def auto_assign(issue_path, assignees)
+      def assign(issue_path, assignees)
         connection.post do |req|
           req.url "/repos/#{Pghub.config.github_organization}/#{issue_path}/assignees?access_token=#{Pghub.config.github_access_token}"
           req.headers['Content-Type'] = 'application/json'
