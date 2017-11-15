@@ -18,11 +18,9 @@ module Pghub
       private
 
       def all_members
-        members = {}
-        teams_data.each do |team|
+        teams_data.each_with_object({}) do |team, members|
           members[team[:name].to_sym] = team_members(team[:id])
         end
-        members
       end
 
       def teams_data
