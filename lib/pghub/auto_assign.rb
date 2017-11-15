@@ -4,6 +4,7 @@ require 'pghub/base'
 include GithubAPI::Connection
 
 class UnknownTeamError < StandardError; end
+class TooManyNumOfMembersError < StandardError; end
 
 module Pghub
   module AutoAssign
@@ -66,7 +67,7 @@ module Pghub
       def select_members(members, num_of_members_per_team, opened_pr_user)
         num_of_members_per_team.each do |team, number|
           team_members = all_members[team.to_sym]
-          raise 'too many assign_numbers' if number > team_members.length
+          raise TooManyNumOfMembersError, "too many number of members per team #{team}" if number > team_members.length
 
           if team_members.include?(opened_pr_user)
             team_members.delete(opened_pr_user)
