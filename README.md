@@ -33,8 +33,8 @@ mount Pghub::Base::Engine => 'some/path'
 Pghub.configure do |config|
   config.github_organization = "Your organization (or user) name"
   config.github_access_token = "Your Github Access Token"
-  config.num_of_assignees_per_team = { myteam1: 1, myteam2: 1 }
-  config.num_of_reviewers_per_team = { myteam: 2, myteam2: 2 }
+  config.num_of_assignees_per_team = { your_team_name: 1, your_team_name2: 1 }
+  config.num_of_reviewers_per_team = { your_team_name: 2, your_team_name2: 2 }
 end
 ```
 
