@@ -27,12 +27,12 @@ module Pghub
 
       def teams_data
         response = connection.get("/orgs/#{Pghub.config.github_organization}/teams?access_token=#{Pghub.config.github_access_token}")
-        body = JSON.parse(response.body)
+        body = JSON.parse(response.body).map(&:with_indifferent_access)
 
-        team_names = body.map { |data| data['name'] }
+        team_names = body.map { |data| data[:name] }
         validate_teams(team_names)
 
-        body.map { |data| { id: data['id'], name: data['name'] } }
+        body.map { |data| { id: data[:id], name: data[:name] } }
       end
 
       def validate_teams(valid_teams)
@@ -46,9 +46,9 @@ module Pghub
 
       def team_members(team_id)
         response = connection.get("/teams/#{team_id}/members?access_token=#{Pghub.config.github_access_token}")
-        body = JSON.parse(response.body)
+        body = JSON.parse(response.body).map(&:with_indifferent_access)
 
-        body.map { |h| h['login'] }
+        body.map { |h| h[:login] }
       end
 
       def select_assignees(opened_pr_user)
