@@ -36,10 +36,10 @@ module Pghub
 
       def validate_teams(valid_teams)
         Pghub.config.num_of_assignees_per_team.each_key do |team|
-          raise UnknownTeamError, "Unknown #{team}" unless valid_teams.include?(team)
+          raise UnknownTeamError, "Unknown #{team}" unless valid_teams.include?(team.to_s)
         end
         Pghub.config.num_of_reviewers_per_team.each_key do |team|
-          raise UnknownTeamError, "Unknown #{team}" unless valid_teams.include?(team)
+          raise UnknownTeamError, "Unknown #{team}" unless valid_teams.include?(team.to_s)
         end
       end
 
