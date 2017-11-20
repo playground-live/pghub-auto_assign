@@ -82,7 +82,7 @@ module Pghub
 
       def assign(issue_path, assignees)
         connection.post do |req|
-          req.url "/repos/#{Pghub.config.github_organization}/#{issue_path}/assignees?access_token=#{Pghub.config.github_access_token}"
+          req.url request_url("#{issue_path}/assginees")
           req.headers['Content-Type'] = 'application/json'
           req.body = { assignees: assignees }.to_json
         end
@@ -92,10 +92,14 @@ module Pghub
         pr_path = issue_path.gsub('issues', 'pulls')
 
         connection.post do |req|
-          req.url "/repos/#{Pghub.config.github_organization}/#{pr_path}/requested_reviewers?access_token=#{Pghub.config.github_access_token}"
+          req.url request_url("#{pr_path}/requested_reviewers")
           req.headers['Content-Type'] = 'application/json'
           req.body = { reviewers: reviewers }.to_json
         end
+      end
+
+      def request_url(path)
+        "/repos/#{Pghub.config.github_organization}/#{path}?access_token=#{Pghub.config.github_access_token}"
       end
     end
   end
