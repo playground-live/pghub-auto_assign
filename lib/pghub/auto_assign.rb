@@ -4,14 +4,23 @@ require 'pghub/base'
 include GithubAPI::Connection
 
 class UnknownTeamError < StandardError; end
-class TooManyNumOfMembersError < StandardError; end
+class TooManyNumOfMembersError < StandardError
+  def initialize(team)
+    super
+    @team = team
+  end
+
+  def to_s
+    "too many number of members per team #{@team}"
+  end
+end
 
 module Pghub
   module AutoAssign
     class << self
       def post(issue_path, opened_pr_user)
-        assignees = select_assignees(opened_pr_user)
-        reviewers = select_reviewers(opened_pr_user)
+        assignees = select_members(Pghub.config.num_of_assignees_per_team, opened_pr_user, [opened_pr_user])
+        reviewers = select_members(Pghub.config.num_of_reviewers_per_team, opened_pr_user)
         assign(issue_path, assignees)
         request_review(issue_path, reviewers)
       end
@@ -50,24 +59,12 @@ module Pghub
         body.map { |h| h[:login] }
       end
 
-      def select_assignees(opened_pr_user)
-        assignees = [opened_pr_user]
-        return assignees if Pghub.config.num_of_assignees_per_team.empty?
+      def select_members(num_of_members_per_team, opened_pr_user, members = [])
+        return members if num_of_members_per_team.empty?
 
-        select_members(assignees, Pghub.config.num_of_assignees_per_team, opened_pr_user)
-      end
-
-      def select_reviewers(opened_pr_user)
-        reviewers = []
-        return reviewers if Pghub.config.num_of_reviewers_per_team.empty?
-
-        select_members(reviewers, Pghub.config.num_of_reviewers_per_team, opened_pr_user)
-      end
-
-      def select_members(members, num_of_members_per_team, opened_pr_user)
         num_of_members_per_team.each do |team, number|
           team_members = all_members[team.to_sym]
-          raise TooManyNumOfMembersError, "too many number of members per team #{team}" if number > team_members.length
+          raise TooManyNumOfMembersError, team if number > team_members.length
 
           if team_members.include?(opened_pr_user)
             team_members.delete(opened_pr_user)
@@ -82,7 +79,7 @@ module Pghub
 
       def assign(issue_path, assignees)
         connection.post do |req|
-          req.url request_url("#{issue_path}/assginees")
+          req.url request_url("#{issue_path}/assignees")
           req.headers['Content-Type'] = 'application/json'
           req.body = { assignees: assignees }.to_json
         end
