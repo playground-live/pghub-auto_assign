@@ -66,12 +66,9 @@ module Pghub
           team_members = all_members[team.to_sym]
           raise TooManyNumOfMembersError, team if number > team_members.length
 
-          if team_members.include?(opened_pr_user)
-            team_members.delete(opened_pr_user)
-            number -= 1
-          end
-
-          members += team_members.sample(number)
+          selected_members = team_members.sample(number)
+          selected_members.delete(opened_pr_user)
+          members += selected_members
         end
 
         members
