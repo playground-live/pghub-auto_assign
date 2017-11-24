@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["ebkn12, akias, Doppon, seteen, mryoshio, sughimura"]
   spec.email         = ["developers@playground.live"]
 
-  spec.summary       = %q{Automatically assign and review request members to your pull request.}
-  spec.description   = %q{This gem automatically assigns and request review members when your pull request open.}
+  spec.summary       = "Automatically assign and review request members to your pull request."
+  spec.description   = "This gem automatically assigns and request review members when your pull request open."
   spec.homepage      = "http://tech-blog.playground.live"
   spec.license       = "MIT"
 
