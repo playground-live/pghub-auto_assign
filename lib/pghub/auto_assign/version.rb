@@ -1,5 +1,5 @@
 module Pghub
-  module Assign
+  module AutoAssign
     VERSION = "0.1.0"
   end
 end

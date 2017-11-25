@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "pghub/assign/version"
+require "pghub/auto_assign/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "pghub-assign"
-  spec.version       = Pghub::Assign::VERSION
+  spec.name          = "pghub-auto_assign"
+  spec.version       = Pghub::AutoAssign::VERSION
   spec.authors       = ["ebkn12, akias, Doppon, seteen, mryoshio, sughimura"]
-  spec.email         = ["ktennis.mqekr12@gmail.com"]
+  spec.email         = ["developers@playground.live"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = "Automatically assign and review request members to your pull request."
+  spec.description   = "This gem automatically assigns and request review members when your pull request open."
+  spec.homepage      = "http://tech-blog.playground.live"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
@@ -24,4 +24,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.15"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+
+  spec.add_dependency "pghub-base", "~> 2.0.0"
 end
