@@ -33,14 +33,20 @@ mount Pghub::Base::Engine => 'some/path'
 ```
 
 - Get github access token
-- Add following settings to config/initializers/pghub.rb
+- Add following code to config/initializers/pghub.rb
+
+You can set the number of assignees(reviewers) per team(Github organization's team).
+
+#### example
+
+<img width="984" alt="2017-12-22 14 22 47" src="https://user-images.githubusercontent.com/21101122/34286441-0c965c98-e724-11e7-91e3-66f2494fd3b6.png">
 
 ```ruby
 Pghub.configure do |config|
   config.github_organization = "Your organization (or user) name"
   config.github_access_token = "Your Github Access Token"
-  config.num_of_assignees_per_team = { your_team_name: 1, your_team_name2: 1 }
-  config.num_of_reviewers_per_team = { your_team_name: 2, your_team_name2: 2 }
+  config.num_of_assignees_per_team = { teamA: 2, teamB: 1 }
+  config.num_of_reviewers_per_team = { teamA: 2, teamB: 1 }
 end
 ```
 
